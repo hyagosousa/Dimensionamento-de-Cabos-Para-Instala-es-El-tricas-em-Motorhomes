@@ -3,143 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Elétrico para Motorhome</title>
+    <title>Motorhome Expert | Simulador Elétrico Profissional</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --accent-color: #27ae60;
-            --bg-color: #f8f9fa;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #10b981;
+            --accent-hover: #059669;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --danger: #ef4444;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: #333;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             margin: 0;
             padding: 20px;
         }
+
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
         }
-        h1 {
-            color: var(--primary-color);
+
+        .header {
             text-align: center;
-            margin-bottom: 5px;
-        }
-        p.subtitle {
-            text-align: center;
-            color: #666;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 20px;
             margin-bottom: 30px;
         }
-        .form-group {
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: var(--accent);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr auto;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 25px;
             align-items: end;
         }
-        @media(max-width: 768px) {
-            .form-group {
+
+        @media(max-width: 850px) {
+            .form-grid {
                 grid-template-columns: 1fr;
             }
         }
+
         label {
-            font-weight: bold;
-            font-size: 0.85rem;
-            color: #555;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-muted);
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+
         input, select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            padding: 11px 14px;
+            background-color: #0b0f19;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 8px;
             box-sizing: border-box;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
         }
+
+        input:focus, select:focus {
+            border-color: var(--accent);
+        }
+
         button {
-            background-color: var(--accent-color);
-            color: white;
+            background-color: var(--accent);
+            color: #0f172a;
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 11px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: background 0.2s, transform 0.1s;
         }
+
         button:hover {
-            background-color: #219653;
+            background-color: var(--accent-hover);
         }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
         .btn-remover {
-            background-color: #e74c3c;
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 12px;
+            font-size: 0.85rem;
         }
+
         .btn-remover:hover {
-            background-color: #c0392b;
+            background-color: var(--danger);
+            color: white;
         }
+
+        .acoes-topo {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+
+        .btn-exportar {
+            background-color: #3b82f6;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-exportar:hover {
+            background-color: #2563eb;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 30px;
-        }
-        th, td {
-            border: 1px solid #dee2e6;
-            padding: 12px;
-            text-align: center;
-        }
-        th {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        .resumo-box {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 30px;
-        }
-        .card-resumo {
-            background: #eef2f3;
-            padding: 20px;
+            margin-top: 15px;
+            overflow: hidden;
             border-radius: 8px;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 14px;
             text-align: center;
-            border-left: 5px solid var(--primary-color);
-        }
-        .card-resumo h3 {
-            margin: 0 0 10px 0;
             font-size: 0.9rem;
-            color: #555;
         }
+
+        th {
+            background-color: #111827;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+
+        .resumo-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 35px;
+        }
+
+        .card-resumo {
+            background: #111827;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+        }
+
+        .card-resumo h3 {
+            margin: 0 0 8px 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .card-resumo p {
             margin: 0;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            color: var(--primary-color);
+            color: var(--text-main);
+        }
+
+        /* Estilização específica para Impressão / PDF */
+        @media print {
+            body {
+                background: white;
+                color: black;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+                background: white;
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+            }
+            .form-grid, .acoes-topo, .btn-remover, th:last-child, td:last-child {
+                display: none !important;
+            }
+            .header h1 { color: #000; }
+            .header h1 span { color: #059669; }
+            .card-resumo {
+                background: #f8fafc;
+                border: 1px solid #cbd5e1;
+                border-left: 4px solid #059669;
+            }
+            .card-resumo h3 { color: #475569; }
+            .card-resumo p { color: #0f172a; }
+            th { background-color: #e2e8f0; color: #334155; }
+            th, td { border-color: #cbd5e1; color: #1e293b; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🚐 Simulador Elétrico para Motorhome</h1>
-    <p class="subtitle">Adicione os equipamentos para calcular a corrente total (Amperes) e o dimensionamento dos cabos.</p>
+    <div class="header">
+        <h1>Motorhome Expert <span>| Elétrica</span></h1>
+        <p>Simulador Profissional de Dimensionamento de Cargas e Fiação</p>
+    </div>
 
-    <div class="form-group">
+    <div class="form-grid">
         <div>
-            <label>Nome do Equipamento</label>
+            <label>Equipamento</label>
             <input type="text" id="nomeEq" placeholder="Ex: Geladeira 12V">
         </div>
         <div>
-            <label>Potência (Watts)</label>
+            <label>Potência (W)</label>
             <input type="number" id="potenciaEq" placeholder="Ex: 60">
         </div>
         <div>
-            <label>Tensão (Volts)</label>
+            <label>Tensão</label>
             <select id="tensaoEq">
                 <option value="12">12V (CC)</option>
                 <option value="24">24V (CC)</option>
@@ -149,38 +267,42 @@
         </div>
         <div>
             <label>Distância Ida (m)</label>
-            <input type="number" id="distanciaEq" placeholder="Ex: 4" value="3">
+            <input type="number" id="distanciaEq" placeholder="Ex: 3" value="3">
         </div>
         <div>
             <label>&nbsp;</label>
-            <button onclick="adicionarEquipamento()">Adicionar</button>
+            <button onclick="adicionarEquipamento()">+ Adicionar</button>
         </div>
+    </div>
+
+    <div class="acoes-topo">
+        <button class="btn-exportar" onclick="exportarRelatorio()">🖨️ Exportar Relatório (PDF)</button>
     </div>
 
     <table id="tabelaEquipamentos">
         <thead>
             <tr>
                 <th>Equipamento</th>
-                <th>Potência (W)</th>
-                <th>Tensão (V)</th>
-                <th>Corrente (A)</th>
-                <th>Distância (m)</th>
-                <th>Cabo Recomendado</th>
+                <th>Potência</th>
+                <th>Tensão</th>
+                <th>Corrente</th>
+                <th>Distância</th>
+                <th>Cabo Ideal</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Os itens adicionados aparecerão aqui -->
+            <!-- Itens adicionados entram dinamicamente -->
         </tbody>
     </table>
 
-    <div class="resumo-box">
+    <div class="resumo-container">
         <div class="card-resumo">
-            <h3>Corrente Total em 12V</h3>
-            <p id="total12v">0.0 A</p>
+            <h3>Corrente Total (12V)</h3>
+            <p id="total12v">0.00 A</p>
         </div>
-        <div class="card-resumo" style="border-left-color: var(--accent-color);">
-            <h3>Equipamentos Cadastrados</h3>
+        <div class="card-resumo" style="border-left-color: #3b82f6;">
+            <h3>Total de Equipamentos</h3>
             <p id="totalItens">0</p>
         </div>
     </div>
@@ -190,15 +312,11 @@
     let equipamentos = [];
 
     function calcularCabo(corrente, distancia, tensao) {
-        // Considera ida e volta (2x) se for 12V ou 24V (Corrente Contínua)
         let fator = (tensao == 12 || tensao == 24) ? 2 : 1;
-        let rho = 0.0172; // Resistividade do cobre
-        let deltaVMax = tensao * 0.03; // Queda máxima aceitável de 3%
-        
-        // Fórmula de queda de tensão: S = (2 * rho * L * I) / Delta_V
+        let rho = 0.0172;
+        let deltaVMax = tensao * 0.03; // Queda máxima admissível de 3%
         let secaoMinima = (fator * rho * distancia * corrente) / deltaVMax;
 
-        // Tabela comercial simplificada de capacidade de corrente para cobre
         const tabela = [
             {bitola: 1.5, cap: 15},
             {bitola: 2.5, cap: 21},
@@ -228,24 +346,15 @@
         let distancia = parseFloat(document.getElementById("distanciaEq").value);
 
         if (!nome || isNaN(potencia) || potencia <= 0 || isNaN(distancia) || distancia <= 0) {
-            alert("Por favor, preencha todos os campos corretamente!");
+            alert("Por favor, preencha todos os campos corretamente.");
             return;
         }
 
-        // Fórmula fundamental da eletricidade: I = P / V (Corrente = Potência / Tensão)
         let corrente = potencia / tensao;
         let caboRecomendado = calcularCabo(corrente, distancia, tensao);
 
-        equipamentos.push({
-            nome,
-            potencia,
-            tensao,
-            corrente,
-            distancia,
-            caboRecomendado
-        });
+        equipamentos.push({ nome, potencia, tensao, corrente, distancia, caboRecomendado });
 
-        // Limpa campos de entrada
         document.getElementById("nomeEq").value = "";
         document.getElementById("potenciaEq").value = "";
         document.getElementById("nomeEq").focus();
@@ -264,29 +373,15 @@
 
         let somaCorrente12V = 0;
 
+        equipamentos.files = equipamentos.forEach ? equipamentos : equipamentos; // safety
+
         equipamentos.forEach((eq, index) => {
             let tr = document.createElement("tr");
             tr.innerHTML = `
-                <td>${eq.nome}</td>
+                <td><strong>${eq.nome}</strong></td>
                 <td>${eq.potencia} W</td>
                 <td>${eq.tensao} V</td>
-                <td><strong>${eq.corrente.toFixed(2)} A</strong></td>
+                <td><span style="color: var(--accent); font-weight: bold;">${eq.corrente.toFixed(2)} A</span></td>
                 <td>${eq.distancia} m</td>
-                <td><span style="color: #27ae60; font-weight: bold;">${eq.caboRecomendado}</span></td>
-                <td><button class="btn-remover" onclick="removerEquipamento(${index})">Excluir</button></td>
-            `;
-            tbody.appendChild(tr);
-
-            // Se for sistema 12V, acumula para o total geral do circuito principal
-            if (eq.tensao == 12) {
-                somaCorrente12V += eq.corrente;
-            }
-        });
-
-        document.getElementById("total12v").innerText = somaCorrente12V.toFixed(2) + " A";
-        document.getElementById("totalItens").innerText = equipamentos.length;
-    }
-</script>
-
-</body>
-</html>
+                <td><span style="color: #60a5fa; font-weight: bold;">${eq.caboRecomendado}</span></td>
+                <td><button class="btn-remover"
