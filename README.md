@@ -58,6 +58,13 @@
             font-size: 0.95rem;
         }
 
+        .dev-credit {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
         .form-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr auto;
@@ -207,35 +214,37 @@
             color: var(--text-main);
         }
 
-        /* Estilização específica para Impressão / PDF */
+        .footer-aviso {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-aviso a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer-aviso a:hover {
+            text-decoration: underline;
+        }
+
         @media print {
-            body {
-                background: white;
-                color: black;
-                padding: 0;
-            }
-            .container {
-                box-shadow: none;
-                border: none;
-                background: white;
-                width: 100%;
-                max-width: 100%;
-                padding: 0;
-            }
-            .form-grid, .acoes-topo, .btn-remover, th:last-child, td:last-child {
-                display: none !important;
-            }
+            body { background: white; color: black; padding: 0; }
+            .container { box-shadow: none; border: none; background: white; width: 100%; max-width: 100%; padding: 0; }
+            .form-grid, .acoes-topo, .btn-remover, th:last-child, td:last-child { display: none !important; }
             .header h1 { color: #000; }
             .header h1 span { color: #059669; }
-            .card-resumo {
-                background: #f8fafc;
-                border: 1px solid #cbd5e1;
-                border-left: 4px solid #059669;
-            }
+            .card-resumo { background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #059669; }
             .card-resumo h3 { color: #475569; }
             .card-resumo p { color: #0f172a; }
             th { background-color: #e2e8f0; color: #334155; }
             th, td { border-color: #cbd5e1; color: #1e293b; }
+            .footer-aviso { color: #334155; }
         }
     </style>
 </head>
@@ -245,6 +254,7 @@
     <div class="header">
         <h1>Motorhome Expert <span>| Elétrica</span></h1>
         <p>Simulador Profissional de Dimensionamento de Cargas e Fiação</p>
+        <div class="dev-credit">Desenvolvido por Hyago Alves de Sousa</div>
     </div>
 
     <div class="form-grid">
@@ -306,6 +316,10 @@
             <p id="totalItens">0</p>
         </div>
     </div>
+
+    <div class="footer-aviso">
+        ⚠️ Em caso de dúvidas na instalação, entre em contato pelo Instagram: <a href="https://instagram.com/Hyagueera" target="_blank">@Hyagueera</a>
+    </div>
 </div>
 
 <script>
@@ -314,7 +328,7 @@
     function calcularCabo(corrente, distancia, tensao) {
         let fator = (tensao == 12 || tensao == 24) ? 2 : 1;
         let rho = 0.0172;
-        let deltaVMax = tensao * 0.03; // Queda máxima admissível de 3%
+        let deltaVMax = tensao * 0.03;
         let secaoMinima = (fator * rho * distancia * corrente) / deltaVMax;
 
         const tabela = [
@@ -325,6 +339,7 @@
             {bitola: 10.0, cap: 50},
             {bitola: 16.0, cap: 68},
             {bitola: 25.0, cap: 89},
+            {bitolar: 35.0, cap: 111},
             {bitola: 35.0, cap: 111},
             {bitola: 50.0, cap: 134}
         ];
@@ -373,8 +388,6 @@
 
         let somaCorrente12V = 0;
 
-        equipamentos.files = equipamentos.forEach ? equipamentos : equipamentos; // safety
-
         equipamentos.forEach((eq, index) => {
             let tr = document.createElement("tr");
             tr.innerHTML = `
@@ -384,4 +397,27 @@
                 <td><span style="color: var(--accent); font-weight: bold;">${eq.corrente.toFixed(2)} A</span></td>
                 <td>${eq.distancia} m</td>
                 <td><span style="color: #60a5fa; font-weight: bold;">${eq.caboRecomendado}</span></td>
-                <td><button class="btn-remover"
+                <td><button class="btn-remover" onclick="removerEquipamento(${index})">Excluir</button></td>
+            `;
+            tbody.appendChild(tr);
+
+            if (eq.tensao == 12) {
+                somaCorrente12V += eq.corrente;
+            }
+        });
+
+        document.getElementById("total12v").innerText = somaCorrente12V.toFixed(2) + " A";
+        document.getElementById("totalItens").innerText = equipamentos.length;
+    }
+
+    function exportarRelatorio() {
+        if (equipamentos.length === 0) {
+            alert("Adicione pelo menos um equipamento antes de exportar o relatório.");
+            return;
+        }
+        window.print();
+    }
+</script>
+
+</body>
+</html>
